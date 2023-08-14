@@ -1,6 +1,7 @@
 package com.josegonzalez.PruebaCoppel.domain.constants.payroll;
 
 public class PayrollConstants {
+    public static final double DEFAULT_BASE_SALARY_PER_HOUR_FOR_ALL = 30;
 
     public static final double HOURS_PER_DAYS = 8;
     public static final double DAYS_PER_WEEKS = 6;

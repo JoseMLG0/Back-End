@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EmployeeRepositoryPort {
-    EmployeeModel save(EmployeeModel employee);
+    EmployeeModel save(EmployeeModel employee) throws Exception;
     Optional<EmployeeModel> findById(Long id);
     List<EmployeeModel> findAll();
     Optional<EmployeeModel> update(Long id, EmployeeModel employee);

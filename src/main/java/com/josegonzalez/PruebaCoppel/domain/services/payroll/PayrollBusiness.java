@@ -4,9 +4,26 @@ import com.josegonzalez.PruebaCoppel.domain.constants.payroll.PayrollConstants;
 import com.josegonzalez.PruebaCoppel.domain.exception.payroll.DeliveriesIsLessThanZeroException;
 import com.josegonzalez.PruebaCoppel.domain.models.employee.EmployeeModel;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
+import java.util.Date;
+
 
 public class PayrollBusiness {
 
+    public static Date parseDateFromYearMonthToYearMonthDay(String date){
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM");
+
+        LocalDate parsedDate = LocalDate.parse(date, dateFormatter);
+
+        LocalDate lastDayOfMonth = parsedDate
+                .plusMonths(1)
+                .with(TemporalAdjusters.firstDayOfMonth())
+                .minusDays(1);
+
+        return java.sql.Date.valueOf(lastDayOfMonth);
+    }
     public static double[] calculateMonthlySalary(EmployeeModel employee, Integer deliveriesMade) {
         if(deliveriesMade<0){
             throw new DeliveriesIsLessThanZeroException(deliveriesMade);

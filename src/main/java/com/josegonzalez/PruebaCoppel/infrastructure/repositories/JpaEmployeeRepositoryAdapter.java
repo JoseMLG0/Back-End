@@ -3,8 +3,11 @@ package com.josegonzalez.PruebaCoppel.infrastructure.repositories;
 import com.josegonzalez.PruebaCoppel.domain.models.employee.EmployeeModel;
 import com.josegonzalez.PruebaCoppel.domain.ports.out.EmployeeRepositoryPort;
 import com.josegonzalez.PruebaCoppel.infrastructure.entities.EmployeeEntity;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.stereotype.Component;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,6 +44,7 @@ public class JpaEmployeeRepositoryAdapter implements EmployeeRepositoryPort {
             EmployeeEntity updateEmployeeEntity = jpaEmployeeRepository.save(employeeEntity);
             return  Optional.of(updateEmployeeEntity.toDomainModel());
         }
+        // TAMBIEN PUEDO USAR MERGE PARA ACTUALIZARLO
         return Optional.empty();
     }
 

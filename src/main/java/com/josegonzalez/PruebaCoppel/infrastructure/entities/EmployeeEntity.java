@@ -1,10 +1,13 @@
 package com.josegonzalez.PruebaCoppel.infrastructure.entities;
 
+import com.josegonzalez.PruebaCoppel.domain.exception.employee.NumberAlreadyExistsException;
 import com.josegonzalez.PruebaCoppel.domain.models.employee.EmployeeModel;
 import com.josegonzalez.PruebaCoppel.domain.constants.employee.Rol;
+import com.josegonzalez.PruebaCoppel.infrastructure.config.ApplicationContextProvider;
+import com.josegonzalez.PruebaCoppel.infrastructure.procedurals.EmployeeProcedurals;
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "Employee")
@@ -15,23 +18,24 @@ public class EmployeeEntity {
     private Long id;
     @Column(name = "number", nullable = false, unique = true)
     private String number;
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "role")
+    @Column(name = "role", nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private Rol rol;
     @Column(name = "base_salary")
     private float baseSalary;
     @Column(name = "active")
     private boolean active;
     @Column(name = "creation_date")
-    private LocalDateTime creationDate;
+    private Date creationDate;
     @Column(name = "updated_date")
-    private LocalDateTime updatedDate;
+    private Date updatedDate;
 
     public EmployeeEntity() {
     }
 
-    public EmployeeEntity(Long id, String number, String name, Rol rol, float baseSalary, boolean active, LocalDateTime creationDate) {
+    public EmployeeEntity(Long id, String number, String name, Rol rol, float baseSalary, boolean active, Date creationDate, Date updatedDate) {
         this.id = id;
         this.number = number;
         this.name = name;
@@ -39,18 +43,16 @@ public class EmployeeEntity {
         this.baseSalary = baseSalary;
         this.active = active;
         this.creationDate = creationDate;
+        this.updatedDate = updatedDate;
     }
     @PrePersist
     public void beforeSave() {
-//        EntityManager em = this.createNativeQuery("CALL tu_procedimiento(?, ?, ?)")
-//                        .setParameter(1, valor1)
-//                        .setParameter(2, valor2)
-//                        .setParameter(3, valor3)
-//                        .executeUpdate();
-//
-//        if (!procedimientoAlmacenadoPermiteGuardar) {
-//            throw new PersistenceException("El procedimiento almacenado no permite guardar el registro.");
-//        }
+        EmployeeProcedurals myService = ApplicationContextProvider.getBean(EmployeeProcedurals.class);
+
+        boolean existNumber = myService.validateEmployeeNumber(number);
+        if(existNumber){
+            throw new NumberAlreadyExistsException(number);
+        }
     }
     @PreUpdate
     public void beforeUpdate(){
@@ -59,11 +61,11 @@ public class EmployeeEntity {
     }
 
     public  static EmployeeEntity fromDomainModel(EmployeeModel employee){
-        return new EmployeeEntity(employee.getId(), employee.getNumber(), employee.getName(), employee.getRol(), employee.getBaseSalary(), employee.isActive(), employee.getCreationDate());
+        return new EmployeeEntity(employee.getId(), employee.getNumber(), employee.getName(), employee.getRol(), employee.getBaseSalary(), employee.isActive(), employee.getCreationDate(), employee.getUpdatedDate());
     }
 
     public EmployeeModel toDomainModel(){
-        return new EmployeeModel(id, number, name, rol, baseSalary, active);
+        return new EmployeeModel(id, number, name, rol, baseSalary, active, creationDate, updatedDate);
     }
 
     public Long getId() {
@@ -114,19 +116,19 @@ public class EmployeeEntity {
         this.active = active;
     }
 
-    public LocalDateTime getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 
-    public LocalDateTime getUpdatedDate() {
+    public Date getUpdatedDate() {
         return updatedDate;
     }
 
-    public void setUpdatedDate(LocalDateTime updatedDate) {
+    public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
     }
 }

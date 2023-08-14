@@ -2,7 +2,8 @@ package com.josegonzalez.PruebaCoppel.domain.models.employee;
 
 import com.josegonzalez.PruebaCoppel.domain.constants.employee.Rol;
 
-import java.time.LocalDateTime;
+import java.util.Date;
+
 
 public class EmployeeModel {
     private Long id;
@@ -11,9 +12,11 @@ public class EmployeeModel {
     private Rol rol;
     private float baseSalary;
     private boolean active;
-    private LocalDateTime creationDate;
-    private LocalDateTime updatedDate;
+    private Date creationDate;
+    private Date updatedDate;
 
+    public EmployeeModel() {
+    }
 
     public EmployeeModel(Long id, String number, String name, Rol rol, float baseSalary, boolean active) {
         this.id = id;
@@ -22,6 +25,17 @@ public class EmployeeModel {
         this.rol = rol;
         this.baseSalary = baseSalary;
         this.active = active;
+    }
+
+    public EmployeeModel(Long id, String number, String name, Rol rol, float baseSalary, boolean active, Date creationDate, Date updatedDate) {
+        this.id = id;
+        this.number = number;
+        this.name = name;
+        this.rol = rol;
+        this.baseSalary = baseSalary;
+        this.active = active;
+        this.creationDate = creationDate;
+        this.updatedDate = updatedDate;
     }
 
     public Long getId() {
@@ -72,19 +86,19 @@ public class EmployeeModel {
         this.active = active;
     }
 
-    public LocalDateTime getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 
-    public LocalDateTime getUpdatedDate() {
+    public Date getUpdatedDate() {
         return updatedDate;
     }
 
-    public void setUpdatedDate(LocalDateTime updatedDate) {
+    public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
     }
 }

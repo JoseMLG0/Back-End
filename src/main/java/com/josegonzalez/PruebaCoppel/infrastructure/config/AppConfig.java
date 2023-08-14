@@ -17,8 +17,12 @@ import com.josegonzalez.PruebaCoppel.infrastructure.adapters.ExternalServiceAdap
 import com.josegonzalez.PruebaCoppel.infrastructure.repositories.JpaEmployeeRepositoryAdapter;
 import com.josegonzalez.PruebaCoppel.infrastructure.repositories.JpaPayrollRepository;
 import com.josegonzalez.PruebaCoppel.infrastructure.repositories.JpaPayrollRepositoryAdapter;
+import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+
+import javax.sql.DataSource;
 
 @Configuration
 public class AppConfig {
