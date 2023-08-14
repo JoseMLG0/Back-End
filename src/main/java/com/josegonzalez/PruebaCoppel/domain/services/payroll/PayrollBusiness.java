@@ -29,8 +29,10 @@ public class PayrollBusiness {
             throw new DeliveriesIsLessThanZeroException(deliveriesMade);
         }
 
-        double baseSalaryPerMonth = employee.getBaseSalary() * PayrollConstants.HOURS_PER_DAYS * PayrollConstants.DAYS_PER_WEEKS * PayrollConstants.WEEKS_PER_MONTH;
-        double bonusSalary = calculateBonusSalary(employee, deliveriesMade);
+        double hoursWorked = PayrollConstants.HOURS_PER_DAYS * PayrollConstants.DAYS_PER_WEEKS * PayrollConstants.WEEKS_PER_MONTH;
+        double baseSalaryPerMonth = employee.getBaseSalary() * hoursWorked;
+
+        double bonusSalary = calculateBonusSalary(employee, deliveriesMade, hoursWorked);
         double grossSalary = baseSalaryPerMonth + bonusSalary;
 
         double isrWithholding = calculateISRWithholding(grossSalary);
@@ -39,19 +41,19 @@ public class PayrollBusiness {
         return new double[]{baseSalaryPerMonth,bonusSalary,grossSalary,isrWithholding, pantryVoucher, grossSalary-isrWithholding+pantryVoucher};
     }
 
-    private static double calculateBonusSalary(EmployeeModel employee, Integer deliveriesMade) {
+    private static double calculateBonusSalary(EmployeeModel employee, Integer deliveriesMade, double hoursWorked) {
         double hourlyBonus = 0;
         double deliverBonus = 0;
         switch (employee.getRol()){
             case Auxiliar -> {
-                hourlyBonus = PayrollConstants.ASSISTANT_BONUS_FOR_HOUR;
+                hourlyBonus = PayrollConstants.ASSISTANT_BONUS_FOR_HOUR*hoursWorked;
             }
             case Chofer -> {
-                hourlyBonus = PayrollConstants.DRIVER_BONUS_FOR_HOUR;
+                hourlyBonus = PayrollConstants.DRIVER_BONUS_FOR_HOUR*hoursWorked;
                 deliverBonus = PayrollConstants.BONUS_PER_DELIVERY * deliveriesMade;
             }
             case Cargador -> {
-                hourlyBonus = PayrollConstants.WAREHOUSE_LOADER_BONUS_FOR_HOUR;
+                hourlyBonus = PayrollConstants.WAREHOUSE_LOADER_BONUS_FOR_HOUR*hoursWorked;
             }
         }
 
