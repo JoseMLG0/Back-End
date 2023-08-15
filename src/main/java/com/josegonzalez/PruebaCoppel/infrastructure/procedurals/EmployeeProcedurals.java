@@ -1,19 +1,15 @@
 package com.josegonzalez.PruebaCoppel.infrastructure.procedurals;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.ParameterMode;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.StoredProcedureQuery;
+import com.josegonzalez.PruebaCoppel.domain.models.employee.EmployeeModel;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.CallableStatementCallback;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.sql.CallableStatement;
 import java.sql.Types;
-import java.util.Map;
+import java.util.List;
 
 @Service
 public class EmployeeProcedurals {
@@ -37,4 +33,17 @@ public class EmployeeProcedurals {
 
         return resultValue != null && resultValue > 0;
     }
+
+
+    public List<EmployeeModel> obtenerEmpleados() {
+        String query = "SELECT id, name FROM employee";
+        return jdbcTemplate.query(query, (rs, rowNum) -> {
+            EmployeeModel employee = new EmployeeModel();
+            employee.setId(rs.getLong("id"));
+            employee.setName(rs.getString("name"));
+            return employee;
+        });
+    }
+
+
 }

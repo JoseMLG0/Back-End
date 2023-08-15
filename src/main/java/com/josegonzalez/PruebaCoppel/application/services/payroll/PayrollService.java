@@ -49,6 +49,11 @@ public class PayrollService implements CreatePayrollUseCase, UpdatePayrollUseCas
     }
 
     @Override
+    public List<PayrollModel> findAll() {
+        return retrievePayrollUseCase.findAll();
+    }
+
+    @Override
     public Optional<PayrollModel> updatePayroll(Long id, PayrollModel payroll) {
         return updatePayrollUseCase.updatePayroll(id, payroll);
     }

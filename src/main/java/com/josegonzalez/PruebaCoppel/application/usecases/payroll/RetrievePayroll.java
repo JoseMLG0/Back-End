@@ -27,4 +27,11 @@ public class RetrievePayroll implements RetrievePayrollUseCase {
     public List<PayrollModel> getAllPayrollFromEmployee(EmployeeModel employee) {
         return payrollRepositoryPort.findAllByEmployeeId(employee);
     }
+
+    @Override
+    public List<PayrollModel> findAll() {
+        return payrollRepositoryPort.findAll();
+    }
+
+
 }

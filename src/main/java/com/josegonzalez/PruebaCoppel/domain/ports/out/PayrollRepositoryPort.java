@@ -10,6 +10,7 @@ public interface PayrollRepositoryPort {
     PayrollModel save(EmployeeModel employee, PayrollModel payroll);
     Optional<PayrollModel> findById(Long id);
     List<PayrollModel> findAllByEmployeeId(EmployeeModel employee);
+    List<PayrollModel> findAll();
     Optional<PayrollModel> update(Long id, PayrollModel payroll);
     boolean deleteById(Long id);
 }

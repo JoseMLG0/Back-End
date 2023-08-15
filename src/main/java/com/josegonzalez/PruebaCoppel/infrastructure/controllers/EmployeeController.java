@@ -1,7 +1,10 @@
 package com.josegonzalez.PruebaCoppel.infrastructure.controllers;
 
 import com.josegonzalez.PruebaCoppel.application.services.employee.EmployeeService;
+import com.josegonzalez.PruebaCoppel.domain.exception.employee.NumberAlreadyExistsException;
 import com.josegonzalez.PruebaCoppel.domain.models.employee.EmployeeModel;
+import com.josegonzalez.PruebaCoppel.infrastructure.config.ApplicationContextProvider;
+import com.josegonzalez.PruebaCoppel.infrastructure.procedurals.EmployeeProcedurals;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +39,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{employeeId}")
-    public ResponseEntity<EmployeeModel> getPayrollById(@PathVariable Long employeeId){
+    public ResponseEntity<EmployeeModel> getEmployeeById(@PathVariable Long employeeId){
         return employeeService.getEmployee(employeeId).map(employee -> new ResponseEntity<>(employee, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

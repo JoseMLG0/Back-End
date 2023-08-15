@@ -40,6 +40,11 @@ public class JpaPayrollRepositoryAdapter implements PayrollRepositoryPort {
     }
 
     @Override
+    public List<PayrollModel> findAll() {
+        return jpaPayrollRepository.findAll().stream().map(PayrollEntity::toDomainModelComplete).collect(Collectors.toList());
+    }
+
+    @Override
     public Optional<PayrollModel> update(Long id, PayrollModel payroll) {
         if (jpaPayrollRepository.existsById(payroll.getId())){
             PayrollEntity employeeEntity = PayrollEntity.fromDomainModel(payroll);
